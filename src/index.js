@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { adopt } from "react-adopt";
 
 import "./styles.css";
 
@@ -14,6 +15,14 @@ class Greeter extends React.Component {
   };
 }
 
+const Composed = adopt({
+  bolder: ({ render }) => <BolderRP>{() => render()}</BolderRP>,
+  smaller: <SmallerRP />,
+  greeter: ({ render }) => (
+    <Greeter person="Sandy">{greeter => render(greeter)}</Greeter>
+  )
+});
+
 const App = () => (
   <div className="App">
     <BolderRP>{() => "text"}</BolderRP>
@@ -26,6 +35,11 @@ const App = () => (
         <button onClick={greet}>Let's greet {person}</button>
       )}
     </Greeter>
+    <Composed>
+      {({ greeter: { greet, person } }) => (
+        <button onClick={greet}>Let's greet {person}</button>
+      )}
+    </Composed>
   </div>
 );
 
