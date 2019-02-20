@@ -1,8 +1,8 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { adopt } from "react-adopt";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { adopt } from 'react-adopt';
 
-import "./styles.css";
+import './styles.css';
 
 const BolderRP = ({ children }) => <b>{children()}</b>;
 const SmallerRP = ({ children }) => <small>{children()}</small>;
@@ -18,30 +18,24 @@ class Greeter extends React.Component {
 const Composed = adopt({
   bolder: ({ render }) => <BolderRP>{() => render()}</BolderRP>,
   smaller: <SmallerRP />,
-  greeter: ({ render }) => (
-    <Greeter person="Sandy">{greeter => render(greeter)}</Greeter>
-  )
+  greeter: ({ render }) => <Greeter person="Sandy">{greeter => render(greeter)}</Greeter>
 });
 
 const App = () => (
   <div className="App">
-    <BolderRP>{() => "text"}</BolderRP>
+    <BolderRP>{() => 'text'}</BolderRP>
     <BolderRP>{() => <p>other text</p>}</BolderRP>
     <BolderRP>{() => <Text />}</BolderRP>
     <BolderRP>{Text}</BolderRP>
     <BolderRP>{() => <SmallerRP>{Text}</SmallerRP>}</BolderRP>
     <Greeter person="John">
-      {({ greet, person }) => (
-        <button onClick={greet}>Let's greet {person}</button>
-      )}
+      {({ greet, person }) => <button onClick={greet}>Let's greet {person}</button>}
     </Greeter>
     <Composed>
-      {({ greeter: { greet, person } }) => (
-        <button onClick={greet}>Let's greet {person}</button>
-      )}
+      {({ greeter: { greet, person } }) => <button onClick={greet}>Let's greet {person}</button>}
     </Composed>
   </div>
 );
 
-const rootElement = document.getElementById("root");
+const rootElement = document.getElementById('root');
 ReactDOM.render(<App />, rootElement);
