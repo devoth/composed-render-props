@@ -7,6 +7,12 @@ import './styles.css';
 const BolderRP = ({ children }) => <b>{children()}</b>;
 const SmallerRP = ({ children }) => <small>{children()}</small>;
 const Text = () => <p>some text</p>;
+
+class Logger extends React.Component {
+  log = () => console.log('logged');
+  render = () => <>{this.props.children(this.log)}</>;
+}
+
 class Greeter extends React.Component {
   greet = () => console.log(`Hello ${this.props.person}`);
   render = () => {
@@ -18,7 +24,8 @@ class Greeter extends React.Component {
 const Composed = adopt({
   bolder: ({ render }) => <BolderRP>{() => render()}</BolderRP>,
   smaller: <SmallerRP />,
-  greeter: ({ render }) => <Greeter person="Sandy">{greeter => render(greeter)}</Greeter>
+  greeter: ({ render }) => <Greeter person="Sandy">{greeter => render(greeter)}</Greeter>,
+  logger: <Logger />
 });
 
 const App = () => (
@@ -33,6 +40,20 @@ const App = () => (
     </Greeter>
     <Composed>
       {({ greeter: { greet, person } }) => <button onClick={greet}>Let's greet {person}</button>}
+    </Composed>
+    <Composed>
+      {({ greeter: { greet, person }, logger }) => (
+        <p>
+          <button
+            onClick={() => {
+              greet();
+              logger();
+            }}
+          >
+            Let's greet {person} and log action
+          </button>
+        </p>
+      )}
     </Composed>
   </div>
 );
